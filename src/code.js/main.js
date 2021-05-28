@@ -61,7 +61,6 @@ function manyMatchesFound() {
       });
 }
 
-
 function onError() {
     error({
         text: 'Try Again!',
