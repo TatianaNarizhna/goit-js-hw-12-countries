@@ -1,16 +1,11 @@
-
-import countryTmpl from '../templates/country.hbs';
-
 import { error } from '@pnotify/core';
 import '@pnotify/core/dist/BrightTheme.css';
-import '@pnotify/core/dist/PNotify.css';
 
-
-import countriesTmpl from '../templates/countries.hbs';
 import ApiCountries from "./fetchCountries.js";
+import countryTmpl from '../templates/country.hbs';
+import countriesTmpl from '../templates/countries.hbs';
 
 const debounce = require('lodash.debounce');
-
 
 const refs = {
     input: document.querySelector('.input-control'),
@@ -36,9 +31,13 @@ function onInputCountry(e) {
         } else if(country.length > 10) {
             cleanInput();
             manyMatchesFound();
+        } else {
+            onError();
         }
     })
-    
+    // .catch(error => {
+    //     onError();
+    // })  
 }
 
 function renderCountry (country) { 
@@ -49,7 +48,6 @@ function renderCountry (country) {
 function renderCountries (countries) {
     const countriesMarkUp = countriesTmpl(countries);
     refs.flagContainer.insertAdjacentHTML('beforeend', countriesMarkUp);
-    
 }
 
 function cleanInput() {
@@ -61,6 +59,14 @@ function manyMatchesFound() {
         text: 'Too many matches found. Please, enter a more specific query!',
         delay: 2000,
       });
+}
+
+
+function onError() {
+    error({
+        text: 'Try Again!',
+        delay: 2000,
+    });
 }
 
 
