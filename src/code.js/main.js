@@ -1,9 +1,12 @@
 
 import countryTmpl from '../templates/country.hbs';
 
-// import debounce from 'lodash.debounce';
-import countriesTmpl from '../templates/countries.hbs';
+import { error } from '@pnotify/core';
+import '@pnotify/core/dist/BrightTheme.css';
+import '@pnotify/core/dist/PNotify.css';
 
+
+import countriesTmpl from '../templates/countries.hbs';
 import ApiCountries from "./fetchCountries.js";
 
 const debounce = require('lodash.debounce');
@@ -17,6 +20,7 @@ const refs = {
 refs.input.addEventListener('input', debounce(onInputCountry, 500));
 
 function onInputCountry(e) {
+    cleanInput();
     let countryName = e.target.value;
 
     ApiCountries.fetchCountries(countryName)
@@ -29,8 +33,12 @@ function onInputCountry(e) {
             cleanInput();
             renderCountries(country);
             
+        } else if(country.length > 10) {
+            cleanInput();
+            manyMatchesFound();
         }
     })
+    
 }
 
 function renderCountry (country) { 
@@ -48,6 +56,12 @@ function cleanInput() {
     refs.flagContainer.innerHTML = '';
 }
 
+function manyMatchesFound() {
+        error({
+        text: 'Too many matches found. Please, enter a more specific query!',
+        delay: 2000,
+      });
+}
 
 
 
