@@ -14,31 +14,39 @@ const refs = {
 
 refs.input.addEventListener('input', debounce(onInputCountry, 500));
 
+
 function onInputCountry(e) {
+
+
     cleanInput();
     let countryName = e.target.value;
-
+    const countryNameTrim = countryName.trim();
+    
+ if(countryNameTrim) {
     ApiCountries.fetchCountries(countryName)
     .then(country => {
-        if(country.length < 2) {
+     
+         if(country.length < 2) {  
+         
             cleanInput();
             renderCountry(country);
+            refs.input.value = '';
             
         } else if(country.length > 1 && country.length <= 10) {
-            cleanInput();
+            cleanInput();   
             renderCountries(country);
+            refs.input.value = '';
             
         } else if(country.length > 10) {
             cleanInput();
             manyMatchesFound();
-        } else {
+        }  else {
             onError();
         }
     })
-    // .catch(error => {
-    //     onError();
-    // })  
+ }
 }
+
 
 function renderCountry (country) { 
     const countryMarkUp = countryTmpl(country);
@@ -67,6 +75,9 @@ function onError() {
         delay: 2000,
     });
 }
+
+export default { onError };
+
 
 
 
