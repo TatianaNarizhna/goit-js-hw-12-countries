@@ -23,7 +23,7 @@ function onInputCountry(e) {
     const countryNameTrim = countryName.trim();
     
  if(countryNameTrim) {
-    ApiCountries.fetchCountries(countryName)
+    ApiCountries.fetchCountries(countryNameTrim)
     .then(country => {
      
          if(country.length < 2) {  
@@ -35,7 +35,7 @@ function onInputCountry(e) {
         } else if(country.length > 1 && country.length <= 10) {
             cleanInput();   
             renderCountries(country);
-            refs.input.value = '';
+            
             
         } else if(country.length > 10) {
             cleanInput();
